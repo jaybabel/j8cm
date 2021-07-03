@@ -93,16 +93,16 @@ void data_destruct()
 	 printf(" 4. Clear io_out\n");
 	 printf(" 5. Initialize bootstrap\n");
 	 printf(" 6. Return to main menu\n");
-    choice = getch();
+    choice = getchar();
     if (choice == 49) {
       printf(" Are you sure you wish to clear memory?(y/n)\n");
-      choice = getch();
+      choice = getchar();
       if (choice == 121) clear_mem();
     }
     if (choice == 50) clear_regs();
     if (choice == 51) {
       printf(" Are you sure you wish to clear io_in?(y/n)\n");
-      choice = getch();
+      choice = getchar();
       if (choice == 121) {
 		  clear_io_in();
 		  in_mrkr=0;

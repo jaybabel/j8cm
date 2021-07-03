@@ -198,7 +198,7 @@ void edit_reg(int col, int row)
   gotoxy(col,row);
   while (choice != 120) {
 	 gotoxy(col+bit,row);
-	 choice = getc();
+	 choice = getchar();
 	 if (choice == 54) {             //right 6
 		bit=bit+2;
 		if (bit > 14) bit=0;
@@ -252,6 +252,6 @@ void panel_mode()
 		disp_regs();
 	 }
 	 gotoxy(3,24);
-	 choice = getc();
+	 choice = getchar();
   }
 }
