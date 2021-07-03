@@ -9,7 +9,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-//#include <conio.h>
 #include <math.h>
 
 
@@ -95,9 +94,9 @@ struct word_node twos_comp(int d)
 
 #include </home/jay/repos/j8cm/j8cm_clr.c>
 #include </home/jay/repos/j8cm/j8cm_pnl.c>
-// #include <j8cm_io.c>
-// #include <j8cm_mem.c>
-// #include <j8cm_ldr.c>
+#include </home/jay/repos/j8cm/j8cm_mem.c>
+// #include </home/jay/repos/j8cm/j8cm_io.c>
+// #include </home/jay/repos/j8cm/j8cm_ldr.c>
 
 int main(void)
 {
@@ -129,6 +128,7 @@ int main(void)
 				 break;
 		case '2':
 		     printf("\n Enter the Memory Panel mode.\n\n");
+				 memory_mode();
 				 break;
 		case '3':
 		     printf("\n Enter the I/O Panel mode.\n\n");
