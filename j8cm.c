@@ -125,6 +125,7 @@ int main(void)
 
 		case '1':
 		     printf("\n Enter the Front Panel mode.\n\n");
+				 panel_mode();
 				 break;
 		case '2':
 		     printf("\n Enter the Memory Panel mode.\n\n");
