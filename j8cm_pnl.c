@@ -188,10 +188,12 @@ void edit_reg(int col, int row)
 
   bit = 0;
   gotoxy(4,23);
-  clreol();
+//  clreol();
+  printf("\033[0K");
   printf("(4,6) to move cursor, <spacebar> to toggle bit");
   gotoxy(4,24);
-  clreol();
+//  clreol();
+  printf("\033[0K");
   printf("x -exit program counter edit");
   gotoxy(col,row);
   while (choice != 120) {
@@ -221,7 +223,8 @@ void edit_reg(int col, int row)
   gotoxy(4,23);
   printf(" p -set PC, f -fetch, e -execute, s -step, r -run, c -clear");
   gotoxy(4,24);
-  clreol();
+//  clreol();
+  printf("\033[0K");
   printf("    x -exit front panel");
 }
 
