@@ -11,7 +11,8 @@ void disp_mem_pg()
   int i, j, k, l, m;
   i=0;
   for (m=1; m<5; ++m) {
-    clrscr();
+//    clrscr();
+    printf("\033[0K");
     printf("Memory Contents, Page %d\n", m-1);
     printf("--------------------------\n");
     for (l=1; l<17; ++l) {
@@ -26,14 +27,15 @@ void disp_mem_pg()
       printf("\n");
     } /* end row loop */
     printf("\n depress any key to continue");
-    j = getch();
+    j = getchar();
   } /* end page loop */
 }
 
 void disp_mem_blk(int a)
 {
   int  i, j;
-  clrscr();
+//  clrscr();
+  printf("\033[0K");
   gotoxy(20,1);
   printf("\nMemory Editor\n\n");
   gotoxy(15,5);
@@ -57,7 +59,8 @@ void load_memory()                                           //Load Memory
 {
   int  a, i, start_adr, bucket;
   a=256;
-  clrscr();
+//  clrscr();
+  printf("\033[0K");
   gotoxy(20,1);
   printf("Memory Editor\n");
   while ((a < 0) || (a > 246)){
@@ -70,7 +73,7 @@ void load_memory()                                           //Load Memory
   i=0;
   while (choice != 120) {
 	 gotoxy(20+i,7+a);
-	 choice = getch();
+	 choice = getchar();
 	 if (choice == 54) {             //right 6
       i=i+2;
       if (i > 14) i=0;
@@ -111,15 +114,15 @@ void load_memory()                                           //Load Memory
 void memory_mode()
 {
   while (choice != 51) {
-    clrscr();
+//    clrscr();
+   printf("\033[0K");
 	 printf("                    J8CM Memory Panel\n\n");
 	 printf("     1. Edit contents of memory\n");
 	 printf("     2. Display contents of memory\n\n");
 	 printf("     3. Return to main menu\n");
-	 choice = getch();
+	 choice = getchar();
     if (choice == 49) load_memory();
 	 if (choice == 50) disp_mem_pg();
   }
   choice=0;
 }                                        // end memory mode routines
-
