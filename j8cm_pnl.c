@@ -118,9 +118,9 @@ void print_yreg(int col, int row)
 
 void disp_regs()
 {
+  print_pc(4,3);
   print_ir(26,3);
   print_sp(48,3);
-  print_pc(4,3);
   print_mar(4,8);
   print_psw(26,8);
   print_acc(4,13);
