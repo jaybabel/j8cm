@@ -177,7 +177,7 @@ void cycle_indicator(int col, int row) // indicate fetch/execute cycle
 //    #       #       #   #
 //    #   #   #       #   #
 //     ###    #        ###
-#include</home/jay/repos/j8cm/c/j8cm_cpu.c>
+#include</home/jay/repos/j8cm/j8cm_cpu.c>
 //#include<j8_cpu1a.cpp>
 // ##################################
 // ##################################

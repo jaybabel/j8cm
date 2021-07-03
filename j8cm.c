@@ -92,8 +92,8 @@ struct word_node twos_comp(int d)
   return(r);
 }
 
-#include </home/jay/repos/j8cm/c/j8cm_clr.c>
-#include </home/jay/repos/j8cm/c/j8cm_pnl.c>
+#include </home/jay/repos/j8cm/j8cm_clr.c>
+#include </home/jay/repos/j8cm/j8cm_pnl.c>
 // #include <j8cm_io.c>
 // #include <j8cm_mem.c>
 // #include <j8cm_ldr.c>
