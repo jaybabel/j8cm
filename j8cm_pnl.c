@@ -242,7 +242,7 @@ void panel_mode()
 	 gotoxy(4,24);
 	 printf("    x -exit front panel");
   while (choice != 120) {
-	 if (choice == 112)edit_reg(5,5);        // p -set PC
+	 if (choice == 112)edit_reg(5,4);        // p -set PC
 	 if (choice == 102) fetch();             // f -fetch
 	 if (choice == 101) execute();           // e -execute
 	 if (choice == 115) step();              // s -step
