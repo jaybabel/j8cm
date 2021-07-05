@@ -187,11 +187,11 @@ void edit_reg(int col, int row)
   int bucket;
 
   bit = 0;
-  gotoxy(4,23);
+  gotoxy(4,22);
 //  clreol();
   printf("\033[0K");
   printf("(4,6) to move cursor, <spacebar> to toggle bit");
-  gotoxy(4,24);
+  gotoxy(4,23);
 //  clreol();
   printf("\033[0K");
   printf("x -exit program counter edit");

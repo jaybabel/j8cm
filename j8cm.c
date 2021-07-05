@@ -97,10 +97,10 @@ struct word_node twos_comp(int d)
 #include </home/jay/repos/j8cm/j8cm_mem.c>
 // #include </home/jay/repos/j8cm/j8cm_io.c>
 // #include </home/jay/repos/j8cm/j8cm_ldr.c>
+char menu_selection, confirm;
 
 int main(void)
 {
-	 char menu_selection, confirm;
 //  clear_mem();
 //  clear_regs();
 //  clear_io_in();
@@ -109,6 +109,7 @@ int main(void)
 //  while (choice != 121) {
 	 system("clear");
 	 do{
+//	 char menu_selection, confirm;
 	 printf("          Jay's 8-bit Computer Model v%1.1f\n", RELNUM);
 
 	 printf("                     Main Menu           \n\n");
@@ -119,6 +120,7 @@ int main(void)
 	 printf("       5. Data Destruct\n");
 	 printf("       6. Quit\n");
    scanf("%c",&menu_selection);
+	//menu_selection = getchar();
 
 	 switch(menu_selection){
 
