@@ -220,9 +220,9 @@ void edit_reg(int col, int row)
 		PC[9-((bit/2)+1)]=bucket;
 	 }
   }
-  gotoxy(4,23);
+  gotoxy(4,22);
   printf(" p -set PC, f -fetch, e -execute, s -step, r -run, c -clear");
-  gotoxy(4,24);
+  gotoxy(4,23);
 //  clreol();
   printf("\033[0K");
   printf("    x -exit front panel");
@@ -237,9 +237,9 @@ void panel_mode()
 	 disp_regs();
 	 cycle_indicator(56,18);
 	 i_flag_out(56,20);;
-	 gotoxy(4,23);
+	 gotoxy(4,22);
 	 printf(" p -set PC, f -fetch, e -execute, s -step, r -run, c -clear");
-	 gotoxy(4,24);
+	 gotoxy(4,23);
 	 printf("    x -exit front panel");
   while (choice != 120) {
 	 if (choice == 112)edit_reg(5,4);        // p -set PC
