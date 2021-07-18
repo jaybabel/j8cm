@@ -1,12 +1,13 @@
 // j8cm_ldr.cpp
 #include <dirent.h>
 
-void listfiles()
+void listfiles(char *p)
 {
   char c;
   DIR *d;
    struct dirent *dir;
-   d = opendir(".");
+//   d = opendir(".");
+   d = opendir(p);
    if (d)
    {
        while ((dir = readdir(d)) != NULL)
@@ -15,7 +16,7 @@ void listfiles()
        }
        closedir(d);
     }
-  c = getch();  
+  c = getch();
 }
 
 void read_obj(char *fnm)
@@ -117,7 +118,7 @@ void loader()
 	 if (choice == 51) setdir(pathname);
    if (choice == 52) {
      printf("\nHere is a list of files in %s", pathname);
-     listfiles();
+     listfiles(pathname);
    }
   }
   choice = 0;
