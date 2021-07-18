@@ -155,7 +155,7 @@ system("clear");
 
 	 printf("                     Main Menu           \n\n");
 	 printf("       1. Front Panel\n");
-	 printf("       2. Memory Panel\n");
+	 printf("       2. Memory Menu\n");
 	 printf("       3. I/O Panel\n\n");
 	 printf("       4. Loader\n\n");
 	 printf("       5. Data Destruct\n");

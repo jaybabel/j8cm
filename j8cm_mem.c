@@ -121,7 +121,7 @@ void memory_mode()
   while (choice != 51) {
    system("clear");
    printf("\033[0K");
-	 printf("                    J8CM Memory Panel\n\n");
+	 printf("                    J8CM Memory Menu\n\n");
 	 printf("     1. Edit contents of memory\n");
 	 printf("     2. Display contents of memory\n\n");
 	 printf("     3. Return to main menu\n");
