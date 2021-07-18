@@ -251,7 +251,7 @@ void panel_mode()
 		clear_regs();
 		disp_regs();
 	 }
-	 gotoxy(3,24);
+	 gotoxy(3,23);
 	 choice = getchar();
   }
 }
