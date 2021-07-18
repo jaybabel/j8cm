@@ -98,5 +98,3 @@ void loader()
   }
   choice = 0;
 }
-
-

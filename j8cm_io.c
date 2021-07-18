@@ -111,7 +111,7 @@ void wipe_io_dsp()
   int i;
   for (i=5; i<16; ++i) {
 	 gotoxy(8,i);
-	 clreol();
+//	 clreol();
   }
 }
 
@@ -182,7 +182,7 @@ void print_blk_count(int s_a)
 
 void io_silk_screen()
 {
-  clrscr();
+  system("clear");
   gotoxy(24,1);
   printf("J8CM I/O Panel\n");
   gotoxy(7,3);
@@ -293,7 +293,7 @@ void io_mode()
 //		  disp_out_dec((out_mrkr/10)*10);
 		  disp_out_dec(start_adr);
 		  gotoxy(1,20);
-		  clreol();
+//		  clreol();
 		  gotoxy(65,21);
 		  printf("2 ");
 		  b_toggle = 0;
@@ -313,4 +313,3 @@ void io_mode()
   }
 }
 							// end I/O mode routines
-
