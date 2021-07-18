@@ -119,7 +119,7 @@ void load_memory()                                           //Load Memory
 void memory_mode()
 {
   while (choice != 51) {
-//    clrscr();
+   system("clear");
    printf("\033[0K");
 	 printf("                    J8CM Memory Panel\n\n");
 	 printf("     1. Edit contents of memory\n");
@@ -132,5 +132,6 @@ void memory_mode()
    if (choice == 49) load_memory();
 	 if (choice == 50) disp_mem_pg();
   }
+  system("clear");
   choice=0;
 }                                        // end memory mode routines
