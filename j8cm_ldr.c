@@ -1,5 +1,22 @@
 // j8cm_ldr.cpp
+#include <dirent.h>
 
+void listfiles()
+{
+  char c;
+  DIR *d;
+   struct dirent *dir;
+   d = opendir(".");
+   if (d)
+   {
+       while ((dir = readdir(d)) != NULL)
+       {
+           printf("%s\n", dir->d_name);
+       }
+       closedir(d);
+    }
+  c = getch();  
+}
 
 void read_obj(char *fnm)
 {
@@ -70,13 +87,14 @@ void loader()
 
   choice = 0;
   strcpy(pathname, "c:");
-  while (choice != 52) {
+  while (choice != 54) {
   system("clear");
 	 printf("       J8CM Loader Utility Menu   \n\n");
 	 printf("   1. Load '.obj' file into memory\n");
 	 printf("   2. Load '.ldr' file into I/O in\n");
-	 printf("   3. Set device name(%s)\n", pathname);
-	 printf("   4. Return to main menu\n");
+	 printf("   3. Set file path(%s)\n", pathname);
+   printf("   4. List files\n");
+   printf("   6. Return to main menu\n");
    set_conio_terminal_mode();
 	 choice = getch();
    reset_terminal_mode();
@@ -97,6 +115,10 @@ void loader()
 		read_ldr(f);
 	 }
 	 if (choice == 51) setdir(pathname);
+   if (choice == 52) {
+     printf("\nHere is a list of files in %s", pathname);
+     listfiles();
+   }
   }
   choice = 0;
   system("clear");
