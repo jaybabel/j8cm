@@ -16,7 +16,9 @@ void listfiles(char *p)
        }
        closedir(d);
     }
-  c = getch();
+  set_conio_terminal_mode();
+    c = getchar();
+  reset_terminal_mode();
 }
 
 void read_obj(char *fnm)
@@ -97,7 +99,7 @@ void loader()
    printf("   4. List files\n");
    printf("   6. Return to main menu\n");
    set_conio_terminal_mode();
-	 choice = getch();
+	 choice = getchar();
    reset_terminal_mode();
 	 if (choice == 49) {
 		printf("\nEnter name(without extender) of file to load - %s",
@@ -121,6 +123,6 @@ void loader()
      listfiles(pathname);
    }
   }
-  choice = 0;
   system("clear");
+  choice=0;
 }
