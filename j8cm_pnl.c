@@ -198,7 +198,9 @@ void edit_reg(int col, int row)
   gotoxy(col,row);
   while (choice != 120) {
 	 gotoxy(col+bit,row);
-	 choice = getchar();
+   set_conio_terminal_mode();
+    choice = getchar();
+   reset_terminal_mode();
 	 if (choice == 54) {             //right 6
 		bit=bit+2;
 		if (bit > 14) bit=0;
@@ -242,7 +244,7 @@ void panel_mode()
 	 gotoxy(4,23);
 	 printf("    x -exit front panel");
   while (choice != 120) {
-	 if (choice == 112)edit_reg(5,4);        // p -set PC
+	 if (choice == 112)edit_reg(5,5);        // p -set PC
 	 if (choice == 102) fetch();             // f -fetch
 	 if (choice == 101) execute();           // e -execute
 	 if (choice == 115) step();              // s -step
@@ -252,6 +254,10 @@ void panel_mode()
 		disp_regs();
 	 }
 	 gotoxy(3,23);
-	 choice = getchar();
+   set_conio_terminal_mode();
+    choice = getchar();
+   reset_terminal_mode();
   }
+  system("clear");
+  choice = 0;
 }

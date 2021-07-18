@@ -148,7 +148,7 @@ int main(void)
 //  clear_io_out();
 //  init_bootstrap();
 //  while (choice != 121) {
-	 system("clear");
+system("clear");
 	 do{
 //	 char menu_selection, confirm;
 	 printf("          Jay's 8-bit Computer Model v%1.1f\n", RELNUM);
@@ -168,7 +168,8 @@ int main(void)
 	 switch(menu_selection){
 
 		case '1':
-		     printf("\n Enter the Front Panel mode.\n\n");
+		     system("clear");
+	//	     printf("\n Enter the Front Panel mode.\n\n");
 				 panel_mode();
 				 break;
 		case '2':
