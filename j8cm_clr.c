@@ -87,13 +87,15 @@ void data_destruct()
   while (choice != 54) {
     system("clear");
     printf("               JEB 1 Data Destruct Menu\n\n");
-	 printf(" 1. Clear memory\n");
+	  printf(" 1. Clear memory\n");
     printf(" 2. Clear registers\n");
     printf(" 3. Clear io_in\n");
-	 printf(" 4. Clear io_out\n");
-	 printf(" 5. Initialize bootstrap\n");
-	 printf(" 6. Return to main menu\n");
+	  printf(" 4. Clear io_out\n");
+	  printf(" 5. Initialize bootstrap\n");
+	  printf(" 6. Return to main menu\n");
+    set_conio_terminal_mode();
     choice = getchar();
+    reset_terminal_mode();
     if (choice == 49) {
       printf(" Are you sure you wish to clear memory?(y/n)\n");
       choice = getchar();
@@ -108,11 +110,12 @@ void data_destruct()
 		  in_mrkr=0;
       }
     }
-	 if (choice == 52) {
-		clear_io_out();
+	  if (choice == 52) {
+		  clear_io_out();
       out_mrkr=0;
-	 }
-	 if (choice == 53) init_bootstrap();
+	  }
+	  if (choice == 53) init_bootstrap();
   }
   choice = 0;
+  system("clear");
 }

@@ -10,7 +10,7 @@ void read_obj(char *fnm)
 
   strcpy(fnm_x, fnm);
   strcat(fnm_x, ".obj");
-  clrscr();
+  system("clear");
   printf("%s\n", fnm_x);
   if((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open .obj file\n");
@@ -36,7 +36,7 @@ void read_ldr(char *fnm)
 
   strcpy(fnm_x, fnm);
   strcat(fnm_x, ".ldr");
-  clrscr();
+  system("clear");
   printf("%s\n", fnm_x);
   if((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open .ldr file\n");
@@ -58,9 +58,9 @@ void read_ldr(char *fnm)
 void setdir(char *pn)
 {
   char p[32];
-  clrscr();
+  system("clear");
   printf("Enter device name>");
-  scanf("%s", &p);
+  scanf("%s", p);
   strcpy(pn, p);
 }
 
@@ -69,19 +69,21 @@ void loader()
   char pathname[PATHLEN], f[PATHLEN], fname[9];
 
   choice = 0;
-  strcpy(pathname, "a:");
+  strcpy(pathname, "c:");
   while (choice != 52) {
-	 clrscr();
+  system("clear");
 	 printf("       J8CM Loader Utility Menu   \n\n");
 	 printf("   1. Load '.obj' file into memory\n");
 	 printf("   2. Load '.ldr' file into I/O in\n");
 	 printf("   3. Set device name(%s)\n", pathname);
 	 printf("   4. Return to main menu\n");
+   set_conio_terminal_mode();
 	 choice = getch();
+   reset_terminal_mode();
 	 if (choice == 49) {
 		printf("\nEnter name(without extender) of file to load - %s",
 				 pathname);
-		scanf("%s", &fname);
+		scanf("%s", fname);
 		strcpy(f, pathname);
 		strcat(f, fname);
 		read_obj(f);
@@ -89,7 +91,7 @@ void loader()
 	 if (choice == 50) {
 		printf("\nEnter name(without extender) of file to load - %s",
 				 pathname);
-		scanf("%s", &fname);
+		scanf("%s", fname);
 		strcpy(f, pathname);
 		strcat(f, fname);
 		read_ldr(f);
@@ -97,4 +99,5 @@ void loader()
 	 if (choice == 51) setdir(pathname);
   }
   choice = 0;
+  system("clear");
 }

@@ -137,7 +137,7 @@ struct word_node twos_comp(int d)
 #include </home/jay/repos/j8cm/j8cm_pnl.c>
 #include </home/jay/repos/j8cm/j8cm_mem.c>
 #include </home/jay/repos/j8cm/j8cm_io.c>
-// #include </home/jay/repos/j8cm/j8cm_ldr.c>
+#include </home/jay/repos/j8cm/j8cm_ldr.c>
 char menu_selection, confirm;
 
 int main(void)
@@ -182,7 +182,7 @@ system("clear");
 				 break;
 		case '4':
  			   printf("\n Enter the Loader.\n\n");
-//				 loader();
+				 loader();
  				 break;
 		case '5':
 				 printf("\n Data Destruct.\n\n");
