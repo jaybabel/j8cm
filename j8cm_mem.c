@@ -11,7 +11,7 @@ void disp_mem_pg()
   int i, j, k, l, m;
   i=0;
   for (m=1; m<5; ++m) {
-//    clrscr();
+    system("clear");
     printf("\033[0K");
     printf("Memory Contents, Page %d\n", m-1);
     printf("--------------------------\n");
@@ -27,7 +27,9 @@ void disp_mem_pg()
       printf("\n");
     } /* end row loop */
     printf("\n depress any key to continue");
+    set_conio_terminal_mode();
     j = getchar();
+    reset_terminal_mode();
   } /* end page loop */
 }
 
@@ -59,7 +61,7 @@ void load_memory()                                           //Load Memory
 {
   int  a, i, start_adr, bucket;
   a=256;
-//  clrscr();
+  system("clear");
   printf("\033[0K");
   gotoxy(20,1);
   printf("Memory Editor\n");
@@ -73,7 +75,9 @@ void load_memory()                                           //Load Memory
   i=0;
   while (choice != 120) {
 	 gotoxy(20+i,7+a);
+   set_conio_terminal_mode();
 	 choice = getchar();
+   reset_terminal_mode();
 	 if (choice == 54) {             //right 6
       i=i+2;
       if (i > 14) i=0;
@@ -109,6 +113,7 @@ void load_memory()                                           //Load Memory
 	   gotoxy(20+i,7+a);
 	 }
   }
+  system("clear");
 }
 
 void memory_mode()
@@ -120,8 +125,11 @@ void memory_mode()
 	 printf("     1. Edit contents of memory\n");
 	 printf("     2. Display contents of memory\n\n");
 	 printf("     3. Return to main menu\n");
-	 choice = getchar();
-    if (choice == 49) load_memory();
+//    if (choice == 49) load_memory();
+   set_conio_terminal_mode();
+     choice = getchar();
+   reset_terminal_mode();
+   if (choice == 49) load_memory();
 	 if (choice == 50) disp_mem_pg();
   }
   choice=0;
