@@ -79,7 +79,7 @@ void setdir(char *pn)
 {
   char p[32];
   system("clear");
-  printf("Enter device name>");
+  printf("Enter path name>");
   scanf("%s", p);
   strcpy(pn, p);
 }
@@ -89,7 +89,7 @@ void loader()
   char pathname[PATHLEN], f[PATHLEN], fname[9];
 
   choice = 0;
-  strcpy(pathname, "c:");
+  strcpy(pathname, "/home/jay/repos/j8cm_local/j8_tests/");
   while (choice != 54) {
   system("clear");
 	 printf("       J8CM Loader Utility Menu   \n\n");
