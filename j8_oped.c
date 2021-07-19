@@ -114,18 +114,6 @@ void inst_treeprintr(struct inst_node *x)
       }
   }
 
-/*
-int kbhit()
-{
-  char c;
-
-  set_conio_terminal_mode();
-    c = getchar();
-  reset_terminal_mode();
-
-  return 1;
-}
-*/
 int kbhit()
 	 {
 	     struct timeval tv = { 0L, 0L };
