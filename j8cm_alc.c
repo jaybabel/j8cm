@@ -15,6 +15,101 @@
 // Supports memory direct, memory indirect, register direct and
 // register indirect addressing modes.
 
+// Added non-standard itoa routine found on stackoverflow original name my_itoa
+#define INT_LEN (10)
+#define HEX_LEN (8)
+#define BIN_LEN (32)
+#define OCT_LEN (11)
+
+static char *  itoa ( int value, char * str, int base )
+{
+    int i,n =2,tmp;
+    char buf[BIN_LEN+1];
+
+
+    switch(base)
+    {
+        case 16:
+            for(i = 0;i<HEX_LEN;++i)
+            {
+                if(value/base>0)
+                {
+                    n++;
+                }
+            }
+            snprintf(str, n, "%x" ,value);
+            break;
+        case 10:
+            for(i = 0;i<INT_LEN;++i)
+            {
+                if(value/base>0)
+                {
+                    n++;
+                }
+            }
+            snprintf(str, n, "%d" ,value);
+            break;
+        case 8:
+            for(i = 0;i<OCT_LEN;++i)
+            {
+                if(value/base>0)
+                {
+                    n++;
+                }
+            }
+            snprintf(str, n, "%o" ,value);
+            break;
+        case 2:
+            for(i = 0,tmp = value;i<BIN_LEN;++i)
+            {
+                if(tmp/base>0)
+                {
+                    n++;
+                }
+                tmp/=base;
+            }
+            for(i = 1 ,tmp = value; i<n;++i)
+            {
+                if(tmp%2 != 0)
+                {
+                    buf[n-i-1] ='1';
+                }
+                else
+                {
+                    buf[n-i-1] ='0';
+                }
+                tmp/=base;
+            }
+            buf[n-1] = '\0';
+            strcpy(str,buf);
+            break;
+        default:
+            return NULL;
+    }
+    return str;
+}  // end stackoverflow code
+
+// another stackoverflow solution
+char *strrev(char *str)
+{
+    if (!str || ! *str)
+        return str;
+
+    int i = strlen(str) - 1, j = 0;
+
+    char ch;
+    while (i > j)
+    {
+        ch = str[i];
+        str[i] = str[j];
+        str[j] = ch;
+        i--;
+        j++;
+    }
+    return str;
+}
+//  ---------------------------------------
+
 int obj_arg, obj_ins, xchoice, adrctr, errcode;
 
 struct st_node                            // symbol tree node
@@ -34,6 +129,10 @@ struct inst_node                        // binary search tree inst_node
 	  struct inst_node *l, *r; };
 
 struct inst_node *inst_t, *inst_head, *inst_z;
+
+void gotoxy(int x, int y) {
+    printf("%c[%d;%df", 0x1B, y, x);
+}
 
 void symboltreeinit()
   {
@@ -82,16 +181,18 @@ void read_inst()
 {
   FILE *infp;
   int x;
+  int i;
   char op[WORDLEN];
-  clrscr();
+system("clear");
   printf("\n READING Instruction Set\n");
-  if((infp=fopen("a:xinstr.set", "r")) == NULL) {
+  if((infp=fopen("/home/jay/repos/j8cm_local/instruction.set", "r")) == NULL) {
 	 printf("cannot open file\n");
   }
   while (!feof(infp)) {
-	 fscanf(infp, "%s%d%d\n", &op, &xchoice, &x);
+	 fscanf(infp, "%s%d%d\n", op, &xchoice, &x);
 	 inst_treeinsert(op, xchoice, x);
-	 strset(op,' ');
+//	 strset(op,' ');
+   memset(op,0,WORDLEN);
   }
   fclose(infp);
 }
@@ -243,7 +344,8 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 
   strcpy(fnm_x, fnm); strcat(fnm_x, ".src"); strcpy(ofnm_x, fnm);
   strcat(ofnm_x, ".obj"); strcpy(sfnm_x, fnm); strcat(sfnm_x, ".sum");
-  strset(symbol,' ');
+//  strset(symbol,' ');
+  memset(symbol,0,strlen(symbol));
   if ((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open file\n");
   }
@@ -257,7 +359,8 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
   while (!feof(infp)) {
 	 fscanf(infp, "%s", src_code);
 	 if (strstr(src_code, "*") != NULL){  // ignore remark statements
-		strset(src_code,' ');
+//		strset(src_code,' ');
+   memset(src_code,0,strlen(src_code));
 		while (strstr(src_code, "*") == NULL) {
 		  fscanf(infp, "%s", src_code);
 		}
@@ -294,7 +397,8 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 		  fprintf(sumfp, "1 %d %d %d %d %s %s %s\n", row, adrctr, obj_ins, obj_arg, label,
 					 src_op, src_arg);
 		  row++; adrctr++;
-	     strset(label, ' ');
+//	     strset(label, ' ');
+      memset(label,0,strlen(label));
 		}
 		else if(strcmp(src_code, "EQU") == 0){
 		  strcpy(src_op, src_code);
@@ -302,30 +406,36 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 		  strcpy(src_arg, src_code);
 		  fprintf(sumfp, "2 %d %s %s %s\n", row, label, src_op, src_arg);
 		  row++;
-		  strset(label, ' ');
+//		  strset(label, ' ');
+      memset(label,0,strlen(label));
 		 }
 	  else {                                             // instruction
 		 rhs_temp = inst_treesearch(symbol);
 		 obj_ins = rhs_temp.ml_code;
 		 if ((obj_ins > -1)&&(rhs_temp.num_args == 1)) { // inst. with arg.
 			strcpy(src_op, symbol);
-			strset(symbol,' '); strset(src_arg,' ');
+//			strset(symbol,' '); strset(src_arg,' ');
+      memset(symbol,0,strlen(symbol)); memset(src_arg,0,strlen(src_arg));
 			fscanf(infp, "%s", src_code);                 // read operand
 			strcpy(src_arg, src_code);         // <-src_arg for summary file
-			strset(symbol,' '); strcpy(symbol, src_code);
+//      strset(symbol,' '); strcpy(symbol, src_code);
+      memset(symbol,0,strlen(symbol)); strcpy(symbol, src_code);
 			// ====================== address modes =====================
 			if (strstr(src_code, "(") != NULL) {      // indirect
-			  strset(symbol,' ');
+//			  strset(symbol,' ');
+        memset(symbol,0,strlen(symbol));
 			  len = strcspn(src_code, ")");           // remove )
 			  strncpy(symbol, src_code, len);              //
 			  strrev(symbol);                         // remove (
 			  len = strcspn(symbol, "(");                  //
-			  strset(src_code, ' ');                       //
+//			  strset(src_code, ' ');                       //
+        memset(src_code,0,strlen(src_code));         //
 			  strncpy(src_code, symbol, len);              //
 			  strrev(src_code);                            //
 			  for (i=0; i<len+1; i++)                // shift chars left 1
 				 src_code[i] = src_code[i+1];
-			  strset(symbol, ' ');
+//			  strset(symbol, ' ');
+        memset(symbol,0,strlen(symbol));
 			  strncpy(symbol, src_code, len);        // cut excess chars
 			  obj_ins = obj_ins + 32;
 			}
@@ -352,12 +462,15 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 			  fprintf(sumfp, "1 %d %d %d %s %s %s\n", row, adrctr, obj_ins,
 						 label, src_op, src_arg);
 			row++; adrctr = adrctr+1+rhs_temp.num_args;
-			strset(label, ' ');
+//			strset(label, ' ');
+      memset(label,0,strlen(label));
 		 }                                        // end if -inst. with arg.
 		 else if (obj_ins > -1) {                 // inst. with no arg.
-			strset(src_arg,' ');
+//			strset(src_arg,' ');
+      memset(src_arg,0,strlen(src_arg));
 			strcpy(src_op, symbol);
-			strset(symbol,' ');
+//			strset(symbol,' ');
+      memset(symbol,0,strlen(symbol));
 			fprintf(outfp, "%d %d\n", adrctr, obj_ins);
 			fprintf(sumfp, "4 %d %d %d %s %s\n", row, adrctr, obj_ins,
 					  label, src_op);
@@ -366,7 +479,8 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 		 }                                       // end inst. with no arg.
 	  }                                         // end else is instruction
 	 }                                          // end else not label
-	 strset(symbol,' ');
+//	 strset(symbol,' ');
+  memset(symbol,0,strlen(symbol));
   }                                            // end while !eof
   fclose(infp); fclose(outfp); fclose(sumfp);
   make_ldr(fnm, inst1_adr);
@@ -395,7 +509,7 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
   char src_code[WORDLEN], symbol[WORDLEN], fnm_x[40];
 
   strcpy(fnm_x, fnm); strcat(fnm_x, ".src");
-  if((errlogfp=fopen("a:error.log", "w")) == NULL) {
+  if((errlogfp=fopen("/home/jay/repos/j8cm_local/error.log", "w")) == NULL) {
 	 gotoxy(5,5); printf("Pass 1 - error - cannot open error log\n");
   }
   if ((infp=fopen(fnm_x, "r")) == NULL) {
@@ -411,7 +525,8 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
 	 }
 	 // ignore remark statements, trap for missing *
 	 if (strstr(src_code, "*") != NULL){
-		strset(src_code,' ');
+//		strset(src_code,' ');
+    memset(src_code,0,strlen(src_code));
 		while ((strstr(src_code, "*") == NULL)&& (!feof(infp))) {
 		  fscanf(infp, "%s", src_code);
 		}
@@ -422,7 +537,8 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
 		  fprintf(errlogfp, "%d\n", 6); // invalid label - length violation
 		  success=0; len = 5;
 		}
-		strset(symbol, ' ');
+//		strset(symbol, ' ');
+    memset(symbol,0,strlen(symbol));
 		strncpy(symbol, src_code, len);
 		rhs_temp = inst_treesearch(symbol);
 		errchk = rhs_temp.ml_code;
@@ -463,7 +579,8 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
 		if(strcmp(src_code, "END") == 0){
 		  fscanf(infp, "%s", src_code);
 		  len = strlen(src_code);
-		  strset(symbol, ' ');
+//		  strset(symbol, ' ');
+      memset(symbol,0,strlen(symbol));
 		  strncpy(symbol, src_code, len);
 		  errchk = symbolsearch(symbol);
 		  if (errchk == -1) {
@@ -485,7 +602,8 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
 		  }
 		}
 	 }
-	 strset(symbol,' ');
+//	 strset(symbol,' ');
+   memset(symbol,0,strlen(symbol));
   }
   fclose(infp); fclose(errlogfp); return(success);
 } // end pass1
@@ -494,9 +612,9 @@ void p1_err_rpt()
 {
   FILE *errlogfp;
 
-  clrscr();
+  system("clear");
   printf("\n Pass 1 Error Report\n");
-  if((errlogfp=fopen("a:error.log", "r")) == NULL) {
+  if((errlogfp=fopen("/home/jay/repos/j8cm_local/error.log", "r")) == NULL) {
 	 printf("cannot open error log\n");
   }
   else {
@@ -517,7 +635,7 @@ void view_obj(char *fnm)
 
   strcpy(fnm_x, fnm);
   strcat(fnm_x, ".obj");
-  clrscr();
+  system("clear");
   printf("%s\n\n", fnm_x);
   if((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open .obj file\n");
@@ -540,7 +658,7 @@ void view_ldr(char *fnm)
 
   strcpy(fnm_x, fnm);
   strcat(fnm_x, ".ldr");
-  clrscr();
+  system("clear");
   printf("%s\n\n", fnm_x);
   if((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open file\n");
@@ -564,56 +682,59 @@ void view_sum(char *fnm)
 
   strcpy(fnm_x, fnm);
   strcat(fnm_x, ".sum");
-  clrscr();
+  system("clear");
   printf("%s\n\n", fnm_x);
   if((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open file\n");
   }
   else {
-	 fscanf(infp, "%s", &sumstring);
+	 fscanf(infp, "%s", sumstring);
 	 while (!feof(infp)) {
 		offset = atoi(sumstring);
-		fscanf(infp, "%s", &sumstring);
+		fscanf(infp, "%s", sumstring);
 		r = atoi(sumstring);
 		if (offset == 3) {                      // two rightmost columns only
-		  fscanf(infp, "%s", &sumstring); strcpy(s2, sumstring);
-		  fscanf(infp, "%s", &sumstring); strcpy(s3, sumstring);
+		  fscanf(infp, "%s", sumstring); strcpy(s2, sumstring);
+		  fscanf(infp, "%s", sumstring); strcpy(s3, sumstring);
 		  screen_out(offset, r, adrctr, obj_ins, obj_arg, s1, s2, s3);
 		}
 		else if (offset == 2) {                 // three rightmost
-		  fscanf(infp, "%s", &sumstring); strcpy(s1, sumstring);
-		  fscanf(infp, "%s", &sumstring); strcpy(s2, sumstring);
-		  fscanf(infp, "%s", &sumstring); strcpy(s3, sumstring);
+		  fscanf(infp, "%s", sumstring); strcpy(s1, sumstring);
+		  fscanf(infp, "%s", sumstring); strcpy(s2, sumstring);
+		  fscanf(infp, "%s", sumstring); strcpy(s3, sumstring);
 		  screen_out(offset, r, adrctr, obj_ins, obj_arg, s1, s2, s3);
 		}
 		else if (offset == 1) {                 // all columns
 		  fscanf(infp, "%d", &i); adrctr = i;
 		  fscanf(infp, "%d", &i); obj_ins = i;
 		  fscanf(infp, "%d", &i); obj_arg = i;
-		  fscanf(infp, "%s", &sumstring);
+		  fscanf(infp, "%s", sumstring);
 		  if (strstr(sumstring, ":") != NULL) {  // is label
 			 strcpy(s1, sumstring);
-			 fscanf(infp, "%s", &sumstring); strcpy(s2, sumstring);
-			 fscanf(infp, "%s", &sumstring); strcpy(s3, sumstring);
+			 fscanf(infp, "%s", sumstring); strcpy(s2, sumstring);
+			 fscanf(infp, "%s", sumstring); strcpy(s3, sumstring);
 		  }
 		  else {
-			 strset(s1, ' ');                    // no label
+//			 strset(s1, ' ');                    // no label
+       memset(s1,0,strlen(s1));
 			 strcpy(s2, sumstring);
-			 fscanf(infp, "%s", &sumstring); strcpy(s3, sumstring);
+			 fscanf(infp, "%s", sumstring); strcpy(s3, sumstring);
 		  }
 		 screen_out(offset, r, adrctr, obj_ins, obj_arg, s1, s2, s3);
 		}     											 // end if  -all columns
 		else if (offset == 4) {                 // no arguments
 		  fscanf(infp, "%d", &i); adrctr = i;
 		  fscanf(infp, "%d", &i); obj_ins = i;
-		  fscanf(infp, "%s", &sumstring);
+		  fscanf(infp, "%s", sumstring);
 		  if (strstr(sumstring, ":") != NULL) {  // is label
 			 strcpy(s1, sumstring);
-			 fscanf(infp, "%s", &sumstring); strcpy(s2, sumstring);
-			 strset(s3, ' ');
+			 fscanf(infp, "%s", sumstring); strcpy(s2, sumstring);
+//			 strset(s3, ' ');
+       memset(s3,0,strlen(s3));
 		  }
 		  else {                                // no label
-			 strset(s1, ' '); strcpy(s2, sumstring); strset(s3, ' ');
+//			 strset(s1, ' '); strcpy(s2, sumstring); strset(s3, ' ');
+       memset(s1,0,strlen(s1)); strcpy(s2, sumstring); memset(s3,0,strlen(s3));
 		  }
 		  screen_out(offset, r, adrctr, obj_ins, obj_arg, s1, s2, s3);
 		}
@@ -625,7 +746,7 @@ void view_sum(char *fnm)
 void post_comp(char *fnm, int vw_files)
 {
   while (xchoice != 54) {
-	 clrscr();
+	 system("clear");
 	 printf("       Post Compile Reports\n");
 	 printf(" compiled file - %s.src\n", fnm);
 	 printf("\n 1. Pass 1 error report\n");
@@ -636,21 +757,21 @@ void post_comp(char *fnm, int vw_files)
 		printf(" 5. View summary file\n");
 	 }
 	 printf(" 6. Return to main menu\n");
-	 xchoice = getch();
+	 xchoice = getchar();
 	 if (xchoice == 49) {
-		p1_err_rpt(); xchoice = getch();
+		p1_err_rpt(); xchoice = getchar();
 	 }
 	 if (xchoice == 50) {
-		clrscr(); symtreeprint(); xchoice = getch();
+		system("clear"); symtreeprint(); xchoice = getchar();
 	 }
 	 if ((xchoice == 51)&&(vw_files)) {
-		view_obj(fnm); xchoice = getch();
+		view_obj(fnm); xchoice = getchar();
 	 }
 	 if ((xchoice == 52)&&(vw_files)) {
-		view_ldr(fnm); xchoice = getch();
+		view_ldr(fnm); xchoice = getchar();
 	 }
 	 if ((xchoice == 53)&&(vw_files)) {
-		view_sum(fnm); xchoice = getch();
+		view_sum(fnm); xchoice = getchar();
 	 }
   }
 }
@@ -659,9 +780,12 @@ int compile(char *fnm)
 {
   int pass2enable, c_flag;
 
-  clrscr();
-  gotoxy(5,5); printf("Pass 1 Running");
-  if (remove("a:error.log")==-1)
+  system("clear");
+  gotoxy(5,5); printf("Pass 1 Running/n");
+  printf("Source file is: %s", fnm);
+  printf("/nEnter to continue");
+  getchar();
+  if (remove("/home/jay/repos/j8cm_local/error.log")==-1)
 	 printf("\nError deleting old error log");
   symboltreeinit();
   pass2enable = pass1(fnm);
@@ -677,7 +801,7 @@ int compile(char *fnm)
 	 gotoxy(5,8); printf("Pass 1 Errors");
   }
   gotoxy(15,18); printf(" - any key to continue -\n");
-  xchoice = getch();
+  xchoice = getchar();
   post_comp(fnm, pass2enable);
   c_flag = 1+pass2enable;
   return(c_flag);
@@ -686,30 +810,30 @@ int compile(char *fnm)
 void setdir(char *pn)
 {
   char p[32];
-  clrscr(); printf("Enter device name>");
-  scanf("%s", &p); strcpy(pn, p);
+  system("clear"); printf("Enter device name>");
+  scanf("%s", p); strcpy(pn, p);
 }
 
-main()
+int main(void)
 {
   int pc_enable=0;
   char pathname[PATHLEN], psname[8], f[PATHLEN];
 
-  strcpy(pathname, "a:");
+  strcpy(pathname, "/home/jay/repos/j8cm_local/");
   inst_treeinit(); read_inst();
   while (xchoice != 121) {
-	 clrscr();
+	 system("clear");
 	 printf("       J8CM Assembly Language Compiler %1.1f\n", RELNUM);
 	 printf(" main menu\n");
 	 printf("\n 1. compile file\n");
 	 printf(" 2. set device name(%s)\n", pathname);
-	 if (pc_enable) printf(" 3. post-compile reports\n", pathname);
+	 if (pc_enable) printf(" 3. post-compile reports(%s)\n", pathname);
 	 printf(" 4. quit\n");
-	 xchoice = getch();
+	 xchoice = getchar();
 	 if (xchoice == 49) {
 		printf("\nEnter name(without extender) of source file - %s",
 				 pathname);
-		scanf("%s", &psname); strcpy(f, pathname); strcat(f, psname);
+		scanf("%s", psname); strcpy(f, pathname); strcat(f, psname);
 		pc_enable = compile(f);
 	 }
 	 if (xchoice == 50) {
@@ -718,10 +842,11 @@ main()
 	 }
 	 if ((xchoice == 51) && (pc_enable)) post_comp(f, pc_enable-1);
 	 if (xchoice == 52) {
-		printf(" Are you sure you wish to quit?(y/n)\n");
-		xchoice = getch();
+//		printf(" Are you sure you wish to quit?(y/n)\n");
+//		xchoice = getchar();
+   exit(0);
 	 }
   }
-  clrscr(); printf("\n\n  end.");
+  system("clear"); printf("\n\n  end.");
   return 0;
 }
