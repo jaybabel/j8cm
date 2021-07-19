@@ -10,9 +10,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <conio.h>
-#include <iostream.h>
-#include <fstream.h>
+#include <math.h>
+#include <termios.h>
+#include <unistd.h>
 
 #define WORDLEN 29
 #define RELNUM  1.0
@@ -89,9 +89,9 @@ void inst_treedelete(char lhs[WORDLEN])
 void delete_inst()
 {
   char k[WORDLEN], t[WORDLEN];
-  clrscr();
+  system("clear");
   printf("enter op_code to delete ");
-  scanf("%s", &t);
+  scanf("%s", t);
   strcpy(k, t);
   inst_treedelete(k);
 }
@@ -114,9 +114,30 @@ void inst_treeprintr(struct inst_node *x)
       }
   }
 
+/*
+int kbhit()
+{
+  char c;
+
+  set_conio_terminal_mode();
+    c = getchar();
+  reset_terminal_mode();
+
+  return 1;
+}
+*/
+int kbhit()
+	 {
+	     struct timeval tv = { 0L, 0L };
+	     fd_set fds;
+	     FD_ZERO(&fds);
+	     FD_SET(0, &fds);
+	     return select(1, &fds, NULL, NULL, &tv);
+	 }
+
 void inst_treeprint()
 {
-  clrscr();
+  system("clear");
   printf("      Op-code List\n");
   printf("Mnemonic   ML Code    #Arguments\n");
   printf("--------------------------------\n");
@@ -151,9 +172,9 @@ void search_inst()
 {
   struct rhs_node i;
   char lhs[WORDLEN], t[WORDLEN];
-  clrscr();
+  system("clear");
   printf("enter op_code value ");
-  scanf("%s", &t);
+  scanf("%s", t);
   strcpy(lhs, t);
   i = inst_treesearch(lhs);
   if (i.ml_code == -1) printf("op-code not found\n");
@@ -167,10 +188,10 @@ void load_inst()
   int mi, na;
   char k[WORDLEN], t[WORDLEN], c[2];
   strcpy(c, "y");
-  clrscr();
+  system("clear");
   do {
 	 printf("enter op_code value ");
-	 scanf("%s", &t);
+	 scanf("%s", t);
 	 strcpy(k, t);
 	 printf("enter ml_code ");
 	 scanf("%d", &mi);
@@ -179,7 +200,7 @@ void load_inst()
 	 inst_treeinsert(k, mi, na);
 	 do {
       printf("Add another? (y/n) ");
-      scanf("%s", &c);
+      scanf("%s", c);
     } while (strcmp(c, "y") && strcmp(c, "n"));
   } while (strcmp(c, "n"));
 }
@@ -191,15 +212,16 @@ void read_inst()
   FILE *infp;
   int x;
   char op[WORDLEN];
-  clrscr();
+  system("clear");
   printf("\n READING\n");
-  if((infp=fopen("a:xinstr.set", "r")) == NULL) {
+  if((infp=fopen("/home/jay/repos/j8cm_local/xinstr.set", "r")) == NULL) {
 	 printf("cannot open file\n");
   }
   while (!feof(infp)) {
-	 fscanf(infp, "%s%d%d\n", &op, &xchoice, &x);
+	 fscanf(infp, "%s%d%d\n", op, &xchoice, &x);
 	 inst_treeinsert(op, xchoice, x);
-	 strset(op,' ');
+//	 strset(op,' ');
+   memset(op,0,strlen(op));
   }
   fclose(infp);
 }
@@ -223,9 +245,9 @@ void inst_tree_wrtr(FILE *fp, struct inst_node *x)
 void write_inst()
 {
   FILE *fp;
-  clrscr();
+  system("clear");
   printf("\n WRITING\n");
-  if((fp=fopen("a:xinstr.set", "wb")) == NULL) {
+  if((fp=fopen("/home/jay/repos/j8cm_local/xinstr.set", "wb")) == NULL) {
 	 printf("cannot open file\n");
   }
   inst_tree_wrtr(fp, inst_head->r);
@@ -237,27 +259,27 @@ void write_inst()
 void iomain()
 {
   while (xchoice != 51) {
-	 clrscr();
+	 system("clear");
 	 printf("    Instruction Set File I/O\n\n");
 	 printf(" main menu\n\n");
 	 printf(" 1. read instruction set file\n");
 	 printf(" 2. write instruction set file\n");
 	 printf(" 3. return main menu\n");
-	 xchoice = getch();
+	 xchoice = getchar();
 	 if (xchoice == 49) read_inst();
 	 if (xchoice == 50) write_inst();
   }
-  clrscr();
+  system("clear");
   printf("\n\n  end.");
 }
 
-main()
+int main(void)
 {
   char c[2];
 
   inst_treeinit();
   while (xchoice != 121) {
-	 clrscr();
+	 system("clear");
 	 printf("    J8CM AL Compiler Op-code Editor %1.1f\n\n", RELNUM);
     printf(" main menu\n\n");
     printf(" 1. new rule tree\n");
@@ -267,11 +289,11 @@ main()
 	 printf(" 5. search rule\n");
 	 printf(" 6. rule I\\O\n");
     printf(" 9. quit\n");
-	 xchoice = getch();
+	 xchoice = getchar();
 	 if (xchoice == 49) {
       do {
         printf("Are you sure? (y/n) ");
-        scanf("%s", &c);
+        scanf("%s", c);
       } while (strcmp(c, "y") && strcmp(c, "n"));
 		if (!strcmp(c, "y")) inst_treeinit();
     }
@@ -281,12 +303,12 @@ main()
 	 if (xchoice == 53) search_inst();
 	 if (xchoice == 54) iomain();
 	 if (xchoice == 57) {
-		printf(" Are you sure you wish to quit?(y/n)\n");
-		xchoice = getch();
+	//	printf(" Are you sure you wish to quit?(y/n)\n");
+	//	xchoice = getchar();
+     exit(0);
 	 }
   }
-  clrscr();
+  system("clear");
   printf("\n\n  end.");
   return 0;
 }
-
