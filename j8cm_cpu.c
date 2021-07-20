@@ -636,6 +636,7 @@ void fetch()
   for (j=1; j<9; ++j)
 	 IR[j] = memory[i] [j];
   FLG.c_flag = 0;
+  PSW[8] = FLG.c_flag;
   increment_PC();
   disp_regs();
 }
