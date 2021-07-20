@@ -90,7 +90,7 @@ void encode_acc(int d)
 {
   int i;
   struct word_node to_acc;
-  
+
   to_acc = twos_comp(d);
   for (i=1; i<9; ++i)
 	 accumulator[i] = to_acc.temp_word[i];
@@ -635,6 +635,7 @@ void fetch()
   i=mar_decode();
   for (j=1; j<9; ++j)
 	 IR[j] = memory[i] [j];
+  FLG.c_flag = 0;
   increment_PC();
   disp_regs();
 }
@@ -685,7 +686,7 @@ void execute()
   if (instr.opcode == 7) test_n_flag();
   if (instr.opcode == 8) test_z_flag();
   if (instr.opcode == 30) cmp_to_acc(instr.adr_mode, instr.reg);
-
+  FLG.c_flag = 1;
   PSW[8] = FLG.c_flag; PSW[7] = FLG.v_flag;
   PSW[6] = FLG.n_flag; PSW[5] = FLG.z_flag;
   disp_regs();
