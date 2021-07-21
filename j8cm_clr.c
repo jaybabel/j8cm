@@ -24,6 +24,8 @@ void clear_regs()
   FLG.v_flag = 0;
   FLG.n_flag = 0;
   FLG.z_flag = 1;
+  PSW[8] = FLG.c_flag; PSW[7] = FLG.v_flag;
+  PSW[6] = FLG.n_flag; PSW[5] = FLG.z_flag;
 }
 
 void clear_mem()

@@ -289,8 +289,10 @@ void pop_stack()
 {
   int i, j;
   i=sp_decode();                       // decimal value of SP
-  for (j=1; j<9; ++j)                  // copy stack memory location
+  for (j=1; j<9; ++j) {                 // copy stack memory location
 	  accumulator[j] = memory[i] [j];   //   to accumulator
+    memory[i] [j] = 0;
+  }
   FLG.n_flag = (accumulator[8] == 1);
   FLG.z_flag = (acc_decode() == 0);
   increment_SP();
