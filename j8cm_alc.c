@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <termios.h>
 
 #define WORDLEN 47
 #define CODELEN 25
@@ -20,6 +21,27 @@
 #define HEX_LEN (8)
 #define BIN_LEN (32)
 #define OCT_LEN (11)
+
+struct termios orig_termios;
+
+void reset_terminal_mode()
+{
+    tcsetattr(0, TCSANOW, &orig_termios);
+}
+
+void set_conio_terminal_mode()
+{
+    struct termios new_termios;
+
+    /* take two copies - one for now, one for later */
+    tcgetattr(0, &orig_termios);
+    memcpy(&new_termios, &orig_termios, sizeof(new_termios));
+
+    /* register cleanup handler, and set the new terminal mode */
+    atexit(reset_terminal_mode);
+    cfmakeraw(&new_termios);
+    tcsetattr(0, TCSANOW, &new_termios);
+}
 
 static char *  itoa ( int value, char * str, int base )
 {
@@ -660,7 +682,6 @@ void view_ldr(char *fnm)
   strcat(fnm_x, ".ldr");
   system("clear");
   printf("%s\n\n", fnm_x);
-  printf("\n reading ldr file\n");
   if((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open file\n");
   }
@@ -760,7 +781,9 @@ void post_comp(char *fnm, int vw_files)
 		printf(" 5. View summary file\n");
 	 }
 	 printf(" 6. Return to main menu\n");
-	 xchoice = getchar();
+   set_conio_terminal_mode();
+  	 xchoice = getchar();
+   reset_terminal_mode();
 	 if (xchoice == 49) {
 		p1_err_rpt(); xchoice = getchar();
 	 }
