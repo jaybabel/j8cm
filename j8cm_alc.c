@@ -185,7 +185,7 @@ void read_inst()
   char op[WORDLEN];
 system("clear");
   printf("\n READING Instruction Set\n");
-  if((infp=fopen("/home/jay/repos/j8cm_local/instruction.set", "r")) == NULL) {
+  if((infp=fopen("/home/jay/repos/j8cm_local/xinstr.set", "r")) == NULL) {
 	 printf("cannot open file\n");
   }
   while (!feof(infp)) {
@@ -342,7 +342,7 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 		 src_arg[WORDLEN], label[WORDLEN], fnm_x[40], ofnm_x[40], sfnm_x[40];
   int row=2, inst1_adr, len, i;
 
-  strcpy(fnm_x, fnm); strcat(fnm_x, ".src"); strcpy(ofnm_x, fnm);
+  strcpy(fnm_x, fnm); strcat(fnm_x, ".asm"); strcpy(ofnm_x, fnm);
   strcat(ofnm_x, ".obj"); strcpy(sfnm_x, fnm); strcat(sfnm_x, ".sum");
 //  strset(symbol,' ');
   memset(symbol,0,strlen(symbol));
@@ -508,7 +508,7 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
   int len, value, errchk, pass_enable, success=1;
   char src_code[WORDLEN], symbol[WORDLEN], fnm_x[40];
 
-  strcpy(fnm_x, fnm); strcat(fnm_x, ".src");
+  strcpy(fnm_x, fnm); strcat(fnm_x, ".asm");
   if((errlogfp=fopen("/home/jay/repos/j8cm_local/error.log", "w")) == NULL) {
 	 gotoxy(5,5); printf("Pass 1 - error - cannot open error log\n");
   }
@@ -748,7 +748,7 @@ void post_comp(char *fnm, int vw_files)
   while (xchoice != 54) {
 	 system("clear");
 	 printf("       Post Compile Reports\n");
-	 printf(" compiled file - %s.src\n", fnm);
+	 printf(" compiled file - %s.asm\n", fnm);
 	 printf("\n 1. Pass 1 error report\n");
 	 printf(" 2. View symbol tree\n");
 	 if (vw_files) {
@@ -817,7 +817,7 @@ void setdir(char *pn)
 int main(void)
 {
   int pc_enable=0;
-  char pathname[PATHLEN], psname[8], f[PATHLEN];
+  char pathname[PATHLEN], psname[20], f[PATHLEN];
 
   strcpy(pathname, "/home/jay/repos/j8cm_local/");
   inst_treeinit(); read_inst();

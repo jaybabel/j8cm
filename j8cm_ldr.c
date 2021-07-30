@@ -89,7 +89,7 @@ void loader()
   char pathname[PATHLEN], f[PATHLEN], fname[9];
 
   choice = 0;
-  strcpy(pathname, "/home/jay/repos/j8cm_local/j8_tests/");
+  strcpy(pathname, "/home/jay/repos/j8cm_local/");
   while (choice != 54) {
   system("clear");
 	 printf("       J8CM Loader Utility Menu   \n\n");
