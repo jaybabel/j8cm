@@ -215,17 +215,17 @@ void sym_tree_wrtr(FILE *fp, struct st_node *x)
 void write_symbol(char *fnm)
 {
   FILE *outfp;
-  char fnm_x[40];
+  char fnm_x[70];
 
   strcpy(fnm_x, fnm);
   strcat(fnm_x, ".sym");
-  gotoxy(5,7); printf("Saving symbol tree as %s", fnm_x);
+  gotoxy(5,8); printf("Saving symbol tree as %s", fnm_x);
   if((outfp=fopen(fnm_x, "w")) == NULL) {
 	 printf("cannot open file\n");
   }
   sym_tree_wrtr(outfp, st_head->r);
   fclose(outfp);
-  gotoxy(5,7); printf("Symbol tree saved as %s ", fnm_x);
+  gotoxy(5,10); printf("Symbol tree saved as %s ", fnm_x);
 }
 
 void print_st_node(struct st_node *x)
@@ -309,12 +309,12 @@ void screen_out(int x, int r, int ac, int i, int a,
 void make_ldr(char *fnm, int jump_start)
 {
   FILE *infp, *outfp;
-  char fnm_x[40], ofnm_x[40];
+  char fnm_x[70], ofnm_x[70];
   int adr_out, i_out;
 
   strcpy(fnm_x, fnm); strcat(fnm_x, ".obj");
   strcpy(ofnm_x, fnm); strcat(ofnm_x, ".ldr");
-  gotoxy(5,9); printf("Creating %s",ofnm_x);
+  gotoxy(5,11); printf("Creating %s",ofnm_x);
   if ((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open file\n");
   }
@@ -339,7 +339,7 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
   FILE *infp, *outfp, *sumfp;
   struct rhs_node rhs_temp;
   char src_code[WORDLEN], symbol[WORDLEN], src_op[WORDLEN],
-		 src_arg[WORDLEN], label[WORDLEN], fnm_x[40], ofnm_x[40], sfnm_x[40];
+		 src_arg[WORDLEN], label[WORDLEN], fnm_x[70], ofnm_x[70], sfnm_x[70];
   int row=2, inst1_adr, len, i;
 
   strcpy(fnm_x, fnm); strcat(fnm_x, ".asm"); strcpy(ofnm_x, fnm);
@@ -484,7 +484,7 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
   }                                            // end while !eof
   fclose(infp); fclose(outfp); fclose(sumfp);
   make_ldr(fnm, inst1_adr);
-  gotoxy(5,9); printf("Executable file written.");
+  gotoxy(5,14); printf("Executable file written.");
 } // end pass2
 
 void pass1err(int ecode)
@@ -506,7 +506,7 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
   FILE *infp, *errlogfp;
   struct rhs_node rhs_temp;
   int len, value, errchk, pass_enable, success=1;
-  char src_code[WORDLEN], symbol[WORDLEN], fnm_x[40];
+  char src_code[WORDLEN], symbol[WORDLEN], fnm_x[70];
 
   strcpy(fnm_x, fnm); strcat(fnm_x, ".asm");
   if((errlogfp=fopen("/home/jay/repos/j8cm_local/error.log", "w")) == NULL) {
@@ -630,7 +630,7 @@ void p1_err_rpt()
 void view_obj(char *fnm)
 {
   FILE *infp;
-  char fnm_x[40];
+  char fnm_x[70];
   int ac, i;
 
   strcpy(fnm_x, fnm);
@@ -653,13 +653,14 @@ void view_obj(char *fnm)
 void view_ldr(char *fnm)
 {
   FILE *infp;
-  char fnm_x[40];
+  char fnm_x[70];
   int i;
 
   strcpy(fnm_x, fnm);
   strcat(fnm_x, ".ldr");
   system("clear");
   printf("%s\n\n", fnm_x);
+  printf("\n reading ldr file\n");
   if((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open file\n");
   }
@@ -677,7 +678,7 @@ void view_sum(char *fnm)
 {
   FILE *infp;
   int offset, r, i;
-  char fnm_x[40], sumstring[WORDLEN],
+  char fnm_x[70], sumstring[WORDLEN],
 		 s1[WORDLEN], s2[WORDLEN], s3[WORDLEN];
 
   strcpy(fnm_x, fnm);
@@ -741,6 +742,8 @@ void view_sum(char *fnm)
 	 }                                         // end if - no arguments
 	 fclose(infp);
   }
+  printf("\n\n - any key to continue -\n");
+  xchoice = getchar();
 }
 
 void post_comp(char *fnm, int vw_files)
@@ -781,24 +784,24 @@ int compile(char *fnm)
   int pass2enable, c_flag;
 
   system("clear");
-  gotoxy(5,5); printf("Pass 1 Running/n");
-  printf("Source file is: %s", fnm);
-  printf("/nEnter to continue");
+  gotoxy(5,4); printf("\nPass 1 Running\n");
+  gotoxy(5,6);printf("Source file is: %s", fnm);
+  printf("\nEnter to continue");
   getchar();
   if (remove("/home/jay/repos/j8cm_local/error.log")==-1)
 	 printf("\nError deleting old error log");
   symboltreeinit();
   pass2enable = pass1(fnm);
-  gotoxy(5,6); printf("Symbol Table Created");
+  gotoxy(5,9); printf("Symbol Table Created");
   write_symbol(fnm);
   if (pass2enable == 1) {
-	 gotoxy(5,5); printf("Pass 1 Complete");
-	 gotoxy(5,8); printf("Pass 2 Running");
+	 gotoxy(5,11); printf("\nPass 1 Complete");
+	 gotoxy(5,12); printf("\nPass 2 Running");
 	 pass2(fnm);
-	 gotoxy(5,8); printf("Pass 2 Complete\n");
+	 gotoxy(5,15); printf("\nPass 2 Complete\n");
   }
   else {
-	 gotoxy(5,8); printf("Pass 1 Errors");
+	 gotoxy(5,10); printf("Pass 1 Errors");
   }
   gotoxy(15,18); printf(" - any key to continue -\n");
   xchoice = getchar();
