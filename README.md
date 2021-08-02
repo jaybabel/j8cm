@@ -19,12 +19,19 @@ j8_oped.exe
   J8CM AL Compiler.
 
 Source code files:
+
   j8cm.c - presents main menu to the user. Includes are:
+  
       j8cm_clr.c - Data Destruct Menu to clear memory, registers, I/O, etc.
+      
       j8cm_pnl.c - j8cm front panel. Routines to display accumulator, program counter, instruction register, etc. Includes:
+      
           j8cm_cpu.c - central processing unit code
+          
       j8cm_mem.c - code to emulate/display j8cm main memory
-      j8cm_io.c - 
+      
+      j8cm_io.c - I/O panel routines
+      
       j8cm_ldr.c - loads compiler output files into main memory directly or via "punched tape reader"
     
   j8cm_alc.c - j8cm assembly language compiler
