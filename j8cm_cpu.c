@@ -554,24 +554,18 @@ void gosub()
 	 memory[i] [j] = PC[j];
   for (j=1; j<9; ++j)
 	 PC[j] = memory [c] [j];
-  for (j=1; j<9; ++j){
-	 SP[j] = i%2;
-	 i=i/2;
-  }
+  decrement_SP();
 }
 
 void return_gosub()
 {
   int i, j;
   i=sp_decode();
-  for (j=1; j<9; ++j)
-	  PC[j] = memory[i] [j];
- // increment_SP;
-  ++i;
   for (j=1; j<9; ++j){
-	 SP[j] = i%2;
-	 i=i/2;
+	  PC[j] = memory[i] [j];
+          memory[i] [j] = 0;
   }
+  increment_SP();
 }
 
 void halt()     // same as jump instruction (so far)
