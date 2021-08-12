@@ -602,7 +602,7 @@ void cmp_to_acc(int a_mode, int gp_reg)
 void test_n_flag()
 {
   int i, j;
-  if (FLG.n_flag ==  1) {                         // jump if n_flag = 1
+  if (FLG.n_flag == 1) {                         // jump if n_flag = 1
 	 i = pc_decode();
 	 for (j=1; j<9; ++j) PC[j] = memory[i] [j];
   }

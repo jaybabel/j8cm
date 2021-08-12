@@ -444,6 +444,7 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
       memset(symbol,0,strlen(symbol)); strcpy(symbol, src_code);
 			// ====================== address modes =====================
 			if (strstr(src_code, "(") != NULL) {      // indirect
+        printf("Memory indirect addressing \n");
 //			  strset(symbol,' ');
         memset(symbol,0,strlen(symbol));
 			  len = strcspn(src_code, ")");           // remove )
@@ -809,7 +810,7 @@ int compile(char *fnm)
   system("clear");
   gotoxy(5,4); printf("\nPass 1 Running\n");
   gotoxy(5,6);printf("Source file is: %s", fnm);
-  printf("\nEnter to continue");
+  // printf("\nEnter to continue");
   getchar();
   if (remove("/home/jay/repos/j8cm_local/error.log")==-1)
 	 printf("\nError deleting old error log");
