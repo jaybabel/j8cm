@@ -366,7 +366,6 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 
   strcpy(fnm_x, fnm); strcat(fnm_x, ".asm"); strcpy(ofnm_x, fnm);
   strcat(ofnm_x, ".obj"); strcpy(sfnm_x, fnm); strcat(sfnm_x, ".sum");
-//  strset(symbol,' ');
   memset(symbol,0,strlen(symbol));
   if ((infp=fopen(fnm_x, "r")) == NULL) {
 	 printf("cannot open file\n");
@@ -381,7 +380,6 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
   while (!feof(infp)) {
 	 fscanf(infp, "%s", src_code);
 	 if (strstr(src_code, "*") != NULL){  // ignore remark statements
-//		strset(src_code,' ');
    memset(src_code,0,strlen(src_code));
 		while (strstr(src_code, "*") == NULL) {
 		  fscanf(infp, "%s", src_code);
@@ -419,7 +417,6 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 		  fprintf(sumfp, "1 %d %d %d %d %s %s %s\n", row, adrctr, obj_ins, obj_arg, label,
 					 src_op, src_arg);
 		  row++; adrctr++;
-//	     strset(label, ' ');
       memset(label,0,strlen(label));
 		}
 		else if(strcmp(src_code, "EQU") == 0){
@@ -428,7 +425,6 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 		  strcpy(src_arg, src_code);
 		  fprintf(sumfp, "2 %d %s %s %s\n", row, label, src_op, src_arg);
 		  row++;
-//		  strset(label, ' ');
       memset(label,0,strlen(label));
 		 }
 	  else {                                             // instruction
@@ -436,31 +432,18 @@ void pass2(char *fnm)          //------------- Pass 2 -----------
 		 obj_ins = rhs_temp.ml_code;
 		 if ((obj_ins > -1)&&(rhs_temp.num_args == 1)) { // inst. with arg.
 			strcpy(src_op, symbol);
-//			strset(symbol,' '); strset(src_arg,' ');
       memset(symbol,0,strlen(symbol)); memset(src_arg,0,strlen(src_arg));
 			fscanf(infp, "%s", src_code);                 // read operand
 			strcpy(src_arg, src_code);         // <-src_arg for summary file
-//      strset(symbol,' '); strcpy(symbol, src_code);
       memset(symbol,0,strlen(symbol)); strcpy(symbol, src_code);
 			// ====================== address modes =====================
-			if (strstr(src_code, "(") != NULL) {      // indirect
-        printf("Memory indirect addressing \n");
-//			  strset(symbol,' ');
+			if (strstr(src_code, "(") != NULL) {                     // indirect
+        strcpy(symbol,&src_code[1]);                           // removes ( from symbol
+        memset(src_code,0,strlen(src_code));
+        strncpy(src_code,symbol,strlen(symbol)-1);             // copies symbol without ( ) to src_code
         memset(symbol,0,strlen(symbol));
-			  len = strcspn(src_code, ")");           // remove )
-			  strncpy(symbol, src_code, len);              //
-			  strrev(symbol);                         // remove (
-			  len = strcspn(symbol, "(");                  //
-//			  strset(src_code, ' ');                       //
-        memset(src_code,0,strlen(src_code));         //
-			  strncpy(src_code, symbol, len);              //
-			  strrev(src_code);                            //
-			  for (i=0; i<len+1; i++)                // shift chars left 1
-				 src_code[i] = src_code[i+1];
-//			  strset(symbol, ' ');
-        memset(symbol,0,strlen(symbol));
-			  strncpy(symbol, src_code, len);        // cut excess chars
-			  obj_ins = obj_ins + 32;
+			  strcpy(symbol,src_code);                              // copies src_code without ) to symbol
+			  obj_ins = obj_ins + 32;                               //sets bit 32 of the instruction - indirect addressing
 			}
 			if (strstr(src_code, "/X") != NULL) {    // X register direct
 			  obj_ins = obj_ins + 64;
