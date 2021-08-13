@@ -9,7 +9,8 @@ It appears to be fully functional in Linux now but I haven't tested everything -
 Demos on YouTube at https://www.youtube.com/channel/UCIGNs_V7qVKOYLUIHZwZUsg/videos
 
 Compile the computer using:  gcc -o j8cm j8cm.c -lm
-Compiler the assembly language compiler using:  gcc -o j8cm_alc j8cm_alc.c -lm
+
+Compile the assembly language compiler using:  gcc -o j8cm_alc j8cm_alc.c -lm
 
 There are three executable programs that make up the j8cm system:
 
