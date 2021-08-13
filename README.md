@@ -1,6 +1,7 @@
 # j8cm
 # Jay's 8-bit Computer Model
 # v2.0 (the gcc port)
+# Demos on YouTube at https://www.youtube.com/channel/UCIGNs_V7qVKOYLUIHZwZUsg/videos
 Originally written on Windows 3.1 Borland C
 This project is to port the J8CM to Linux gcc
 
