@@ -332,13 +332,13 @@ void add_to_acc(int a_mode, int gp_reg)
   i = get_address(a_mode, gp_reg);
   if (a_mode == 2) {
 	 for (m=1; m<9; ++m)
-		if (gp_reg == 1) MAR[m] = yreg [m];
+		if (gp_reg == 1) MAR[m] = yreg [m];  //general purpose register is yreg
 		  else MAR[m] = xreg [m];
   }
-  else
-	 for (m=1; m<9; ++m)
-		MAR[m] = memory[i] [m];
-  i=mar_decode();
+//  else
+//	 for (m=1; m<9; ++m)
+//		MAR[m] = memory[i] [m];
+  //i=mar_decode();
   m=mem_decode(i);
   a=acc_decode();
   a=a+m;
