@@ -572,7 +572,8 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
 		else {
 		  value = adrctr;
 		  if(strcmp(src_code, "DAT") == 0) adrctr++;
-			 else adrctr = adrctr+2;
+//        else if(strcmp(src_code, "ASL") == 0) adrctr+5;
+			    else adrctr = adrctr+2;
 		  symboltreeinsert(symbol, value); // insert label into symbol table
 		  fscanf(infp, "%s", src_code);
 		}
@@ -600,6 +601,8 @@ int pass1(char *fnm)                       //------------- Pass 1 -----------
 		  if (rhs_temp.num_args == 1) {
 			 fscanf(infp, "%s", src_code);               // read inst. argument
 			 if (strstr(src_code, "/") != NULL) rhs_temp.num_args = 0;
+       // added ASL check didn't work
+         // if (strstr(src_code, "ASL") != NULL) rhs_temp.num_args = 0;
 			 adrctr = adrctr+1+rhs_temp.num_args;
 			 rhs_temp = inst_treesearch(src_code);       // error check
 			 if (rhs_temp.ml_code > -1){

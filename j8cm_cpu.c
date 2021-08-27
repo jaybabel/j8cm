@@ -358,10 +358,10 @@ void sub_from_acc(int a_mode, int gp_reg)
 		if (gp_reg == 1) MAR[m] = yreg [m];
 		  else MAR[m] = xreg [m];
   }
-  else
-	 for (m=1; m<9; ++m)
-		MAR[m] = memory[i] [m];
-  i=mar_decode();
+//  else
+//	 for (m=1; m<9; ++m)
+//		MAR[m] = memory[i] [m];
+//  i=mar_decode();
   m=mem_decode(i);
   a=acc_decode();
   a=a-m;
@@ -637,6 +637,26 @@ void fetch()
   disp_regs();
 }
 
+void snapshot()
+{
+  // Write snapshot of memory to file for memory viewer
+  FILE *icycfp, *msnapfp;
+  int a, b, m;
+
+  msnapfp = fopen("./memory_snapshot", "w");
+//  fwrite(memory,256,8,msnapfp);
+  for (a=0; a<256; ++a) {
+   for (b=0; b<8; ++b) {
+      m = memory[a] [b];
+//      fwrite(m,1,1,msnapfp);
+      fprintf(msnapfp, "%d", m);
+    } /* end bit loop */
+  } /* end address loop */
+  fclose(msnapfp);
+  icycfp = fopen("./i_cycle", "w");           // Write a file to indicate new snapshot. File is deleted by viewerr program when snapshot is read.
+  fclose(icycfp);
+}
+
 void execute()
 {
   struct i_node instr;
@@ -687,6 +707,7 @@ void execute()
   PSW[8] = FLG.c_flag; PSW[7] = FLG.v_flag;
   PSW[6] = FLG.n_flag; PSW[5] = FLG.z_flag;
   disp_regs();
+  snapshot();
 }
 
 void step()

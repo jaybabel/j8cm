@@ -23,7 +23,7 @@
 
 int bit,
 	 i_flag,                       // cycle indicator flag,
-											 //    fetch sets to 0, execute to 1
+								   //    fetch sets to 0, execute to 1
 	 choice,
 	 in_mrkr=0,                    // i/o marker
 	 out_mrkr=0,                   // i/o marker
@@ -35,8 +35,8 @@ int bit,
 	 MAR[wordlen],                 // memory address register
 	 SP[wordlen],                  // stack pointer
 	 PSW[wordlen],                 // processor status word
-	 memory[addresses] [wordlen],  // memory 8x256
-	 io_in[iolen] [wordlen],       // I/O 8x200
+	 memory[addresses] [wordlen],  // memory 256x8
+	 io_in[iolen] [wordlen],       // I/O 200x8
 	 io_out[iolen] [wordlen];
 
 	 struct termios orig_termios;
@@ -74,15 +74,15 @@ int bit,
 struct word_node { int temp_word[wordlen]; };
 
 struct i_node { int opcode,
-						  adr_mode,
-						  reg;
-				  };
+					adr_mode,
+					reg;
+			  };
 
 struct flg_node { int c_flag,       // carry flag
-							 v_flag,       // overflow flag
-							 n_flag,       // result negative
-							 z_flag;       // result = 0
-					 };
+					  v_flag,       // overflow flag
+					  n_flag,       // result negative
+					  z_flag;       // result = 0
+				};
 
 struct flg_node FLG;                // Processor Flags
 
@@ -133,12 +133,6 @@ char menu_selection, confirm;
 
 int main(void)
 {
-//  clear_mem();
-//  clear_regs();
-//  clear_io_in();
-//  clear_io_out();
-//  init_bootstrap();
-//  while (choice != 121) {
 system("clear");
 	 do{
 //	 char menu_selection, confirm;
@@ -160,24 +154,20 @@ system("clear");
 
 		case '1':
 		     system("clear");
-	//	     printf("\n Enter the Front Panel mode.\n\n");
 				 panel_mode();
 				 break;
 		case '2':
-		     printf("\n Enter the Memory Panel mode.\n\n");
 				 memory_mode();
 				 break;
 		case '3':
-		     printf("\n Enter the I/O Panel mode.\n\n");
 				 io_mode();
 				 break;
 		case '4':
- 			   printf("\n Enter the Loader.\n\n");
 				 loader();
  				 break;
 		case '5':
-				 printf("\n Data Destruct.\n\n");
 				 data_destruct();
+				 snapshot();
 				 break;
 		case '6':
 	    	 printf(" Are you sure you wish to quit?(y/n)\n");
