@@ -116,7 +116,10 @@ void data_destruct()
 		  clear_io_out();
       out_mrkr=0;
 	  }
-	  if (choice == 53) init_bootstrap();
+	  if (choice == 53) {
+      init_bootstrap();
+      snapshot();
+    }
   }
   choice = 0;
   system("clear");

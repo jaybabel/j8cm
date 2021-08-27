@@ -637,6 +637,7 @@ void fetch()
   disp_regs();
 }
 
+/*
 void snapshot()
 {
   // Write snapshot of memory to file for memory viewer
@@ -650,12 +651,14 @@ void snapshot()
       m = memory[a] [b];
 //      fwrite(m,1,1,msnapfp);
       fprintf(msnapfp, "%d", m);
-    } /* end bit loop */
-  } /* end address loop */
+    } // end bit loop
+  } // end address loop
   fclose(msnapfp);
   icycfp = fopen("./i_cycle", "w");           // Write a file to indicate new snapshot. File is deleted by viewerr program when snapshot is read.
   fclose(icycfp);
 }
+*/
+
 
 void execute()
 {

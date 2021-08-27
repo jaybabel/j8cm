@@ -124,11 +124,32 @@ struct word_node twos_comp(int d)
   return(r);
 }
 
+void snapshot()
+{
+  // Write snapshot of memory to file for memory viewer
+  FILE *icycfp, *msnapfp;
+  int a, b, m;
+
+  msnapfp = fopen("./memory_snapshot", "w");
+//  fwrite(memory,256,8,msnapfp);
+  for (a=0; a<256; ++a) {
+   for (b=0; b<8; ++b) {
+      m = memory[a] [b];
+//      fwrite(m,1,1,msnapfp);
+      fprintf(msnapfp, "%d", m);
+    } /* end bit loop */
+  } /* end address loop */
+  fclose(msnapfp);
+  icycfp = fopen("./i_cycle", "w");           // Write a file to indicate new snapshot. File is deleted by viewerr program when snapshot is read.
+  fclose(icycfp);
+}
+
 #include </home/jay/repos/j8cm/j8cm_clr.c>
 #include </home/jay/repos/j8cm/j8cm_pnl.c>
 #include </home/jay/repos/j8cm/j8cm_mem.c>
 #include </home/jay/repos/j8cm/j8cm_io.c>
 #include </home/jay/repos/j8cm/j8cm_ldr.c>
+
 char menu_selection, confirm;
 
 int main(void)
@@ -145,7 +166,7 @@ system("clear");
 	 printf("       4. Loader\n\n");
 	 printf("       5. Data Destruct\n");
 	 printf("       6. Quit\n");
-//   scanf("%c",&menu_selection);
+
    set_conio_terminal_mode();
 	   menu_selection = getchar();
    reset_terminal_mode();
@@ -178,7 +199,6 @@ system("clear");
 				     break;
 	 }
  } while(menu_selection !='6');
-//  system("clear");
   printf("\n\n  end.");
   return 0;
 }
