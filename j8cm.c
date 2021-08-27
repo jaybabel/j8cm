@@ -131,11 +131,9 @@ void snapshot()
   int a, b, m;
 
   msnapfp = fopen("./memory_snapshot", "w");
-//  fwrite(memory,256,8,msnapfp);
   for (a=0; a<256; ++a) {
-   for (b=0; b<8; ++b) {
-      m = memory[a] [b];
-//      fwrite(m,1,1,msnapfp);
+   for (b=1; b<9; ++b) {
+      m = memory[a] [9-b];
       fprintf(msnapfp, "%d", m);
     } /* end bit loop */
   } /* end address loop */

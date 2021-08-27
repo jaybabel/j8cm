@@ -105,6 +105,7 @@ void load_memory()                                           //Load Memory
 	printf("%d",bucket);
       }
 		memory [(start_adr+a)] [9-((i/2)+1)]=bucket;
+    snapshot();
     }
     if (choice == 110) {            // next block
       start_adr=start_adr+10;

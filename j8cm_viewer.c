@@ -37,29 +37,8 @@ void reset_terminal_mode()
       tcsetattr(0, TCSANOW, &new_termios);
   }
 
-void mem_view()
-{
-    FILE *icycfp, *msnapfp;
-    int a, b, m;
-    char str[1];
-
-  if(remove("./i_cycle") != 0) {
-  	 gotoxy(5,5); printf("       No i_cycle file                 \n");
-   } else {
-     remove("./i_cycle");
-     gotoxy(5,5); printf("       Memory snapshot read.\n");
-     msnapfp = fopen("./memory_snapshot", "r");
-     for (a=0; a<256; ++a) {
-       for (b=0; b<8; ++b) {
-         fgets(str, 2, msnapfp);
-         m = atoi(str);
-         memory[a] [b] = m;
-       } /* end bit loop */
-     } /* end address loop */
-     fclose(msnapfp);
-     snapshot_read = 1;
-   }
-}
+// Here's where mem_view() was and it worked
+// *****************************************
 
 void draw_panel()
 {
@@ -107,16 +86,39 @@ void disp_mem_pg()
   draw_panel();
 }
 
+void mem_view()
+{
+    FILE *icycfp, *msnapfp;
+    int a, b, m;
+    char str[1];
+
+  if(remove("./i_cycle") != 0) {
+  	 gotoxy(5,5); printf("       No i_cycle file                 \n");
+   } else {
+     remove("./i_cycle");
+     gotoxy(5,5); printf("       Memory snapshot read.\n");
+     msnapfp = fopen("./memory_snapshot", "r");
+     for (a=0; a<256; ++a) {
+       for (b=1; b<9; ++b) {
+         fgets(str, 2, msnapfp);
+         m = atoi(str);
+         memory[a] [9-b] = m;
+       } /* end bit loop */
+     } /* end address loop */
+     fclose(msnapfp);
+     snapshot_read = 1;
+     disp_mem_pg();
+
+   }
+}
+
 void panel_mode()
 {
    draw_panel();
    mem_view();
      while (choice != 120) {
-//	     if (choice == 110)next_page();           // n - next page
-//       if (choice == 105)write_icycle();  	    // i - write new icycle
        if (choice == 100)disp_mem_pg();
        if (choice == 114)mem_view(); 	    // r - refresh snapshot
-//       mem_view();
 	     gotoxy(3,23);
        set_conio_terminal_mode();
           choice = getchar();
