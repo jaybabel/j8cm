@@ -39,3 +39,6 @@ Source code files:
   j8cm_alc.c - j8cm assembly language compiler
    
   j8_oped.c - op code editer
+  
+  j8cm_viewer - program to read and display snapshot file of the J8CM memory.  Enables a view of memory without requiring exot from the front panel (or any other j8cm screen). 
+  
