@@ -101,7 +101,10 @@ void data_destruct()
     if (choice == 49) {
       printf(" Are you sure you wish to clear memory?(y/n)\n");
       choice = getchar();
-      if (choice == 121) clear_mem();
+      if (choice == 121) {
+        clear_mem();
+        snapshot();
+      }
     }
     if (choice == 50) clear_regs();
     if (choice == 51) {

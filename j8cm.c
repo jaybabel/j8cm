@@ -155,6 +155,8 @@ char menu_selection, confirm;
 int main(void)
 {
 system("clear");
+snapshot();
+
 	 do{
 //	 char menu_selection, confirm;
 	 printf("          Jay's 8-bit Computer Model v%1.1f\n", RELNUM);

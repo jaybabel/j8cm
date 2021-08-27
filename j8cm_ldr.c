@@ -44,6 +44,8 @@ void read_obj(char *fnm)
 		fscanf(infp, "%d%d", &ac, &d);
 	 }
 	 fclose(infp);
+   snapshot();
+
   }
 }                                // end read_obj
 
