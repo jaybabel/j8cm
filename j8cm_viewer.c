@@ -37,22 +37,41 @@ void reset_terminal_mode()
       tcsetattr(0, TCSANOW, &new_termios);
   }
 
-// Here's where mem_view() was and it worked
-// *****************************************
-
 void draw_panel()
 {
   system("clear");
   gotoxy(29,1);
   printf("J8CM Memory Viewer");
-//  gotoxy(4,22);
-//  printf(" n - next page,");
   gotoxy(4,22);
   printf(" r - refresh snapshot,");
   gotoxy(30,22);
   printf(" d - display memory");
   gotoxy(4,23);
   printf(" x - exit memory viewer");
+}
+
+void mem_view()
+{
+    FILE *icycfp, *msnapfp;
+    int a, b, m;
+    char str[1];
+
+  if(remove("./i_cycle") != 0) {
+  	 gotoxy(60,1); printf("No i_cycle file.\n");
+   } else {
+     remove("./i_cycle");
+     gotoxy(60,1); printf("Snapshot read.  \n");
+     msnapfp = fopen("./memory_snapshot", "r");
+     for (a=0; a<256; ++a) {
+       for (b=1; b<9; ++b) {
+         fgets(str, 2, msnapfp);
+         m = atoi(str);
+         memory[a] [9-b] = m;
+       } /* end bit loop */
+     } /* end address loop */
+     fclose(msnapfp);
+     snapshot_read = 1;
+   }
 }
 
 void disp_mem_pg()
@@ -86,38 +105,13 @@ void disp_mem_pg()
   draw_panel();
 }
 
-void mem_view()
-{
-    FILE *icycfp, *msnapfp;
-    int a, b, m;
-    char str[1];
-
-  if(remove("./i_cycle") != 0) {
-  	 gotoxy(5,5); printf("       No i_cycle file                 \n");
-   } else {
-     remove("./i_cycle");
-     gotoxy(5,5); printf("       Memory snapshot read.\n");
-     msnapfp = fopen("./memory_snapshot", "r");
-     for (a=0; a<256; ++a) {
-       for (b=1; b<9; ++b) {
-         fgets(str, 2, msnapfp);
-         m = atoi(str);
-         memory[a] [9-b] = m;
-       } /* end bit loop */
-     } /* end address loop */
-     fclose(msnapfp);
-     snapshot_read = 1;
-     disp_mem_pg();
-
-   }
-}
-
 void panel_mode()
 {
    draw_panel();
-   mem_view();
-     while (choice != 120) {
-       if (choice == 100)disp_mem_pg();
+   mem_view();                            // read memory snapshot into memory array
+   disp_mem_pg();
+     while (choice != 120) {              // x - exit
+       if (choice == 100)disp_mem_pg();   // d - display memory array
        if (choice == 114)mem_view(); 	    // r - refresh snapshot
 	     gotoxy(3,23);
        set_conio_terminal_mode();
@@ -127,7 +121,6 @@ void panel_mode()
   system("clear");
   choice = 0;
 }
-
 
 int main(void)
 {
